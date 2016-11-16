@@ -1,0 +1,69 @@
+<div class="nav">
+	<a type="button" href="{:U('add','','')}" class="btn btn-primary navbar-btn">添加拍卖商品</a>
+</div>
+<table id="listTable" class="table table-bordered">
+	<thead>
+		<tr>
+			<th>商品标题</th>
+			<th>所属栏目</th>
+			<th>起拍价(元)</th>
+			<th>保留价(元)</th>
+			<th>立即揭标价(元)</th>
+			<th>加价幅度(元)</th>
+			<th>保证金(元)</th>
+			<th>出价次数(次)</th>
+			<th>最高价(元)</th>
+			<th>结束时间</th>
+			<th style="width:150px">操作</th>
+		</tr>
+	</thead>
+	<tbody>
+		<foreach name="list" item="item">
+		<tr>
+			<td>{$item.title}</td>
+			<td>{$item.category.name}</td>
+			<td>{$item.qipaijia}</td>
+			<td>{$item.baoliujia}</td>
+			<td>{$item.lijijia}</td>
+			<td>{$item.jiafujia}</td>
+			<td>{$item.baozhengjin}</td>
+			<td>{$item.chujiacishu}</td>
+			<td>{$item.zuigaojia}</td>
+			<td>{$item.end_time}</td>
+			<td gid="{$item.gid}">
+				<a type="button" class="edit btn btn-warning btn-sm" href='{:U('edit','','')}/{$item.gid}'>编辑</a>
+				<if condition="$item.chujiacishu elt 0">
+					<button type="button" class="delete btn btn-danger btn-sm">删除</button>
+				</if>
+			</td>
+		</tr>
+		</foreach>
+	</tbody>
+</table>
+<include file="Public:pager"/>
+<script type="text/javascript">
+	$(function(){
+		
+		$("#listTable").on("click",".delete", function(evt) {
+			var ths = $(this);
+			var gid = ths.parent().attr("gid");
+			var tr = ths.closest("tr");
+			UI.confirm("是否删除", {
+				ok: function() {
+					remove(tr, gid);
+				}
+			});
+		});
+		
+		function remove(tr, gid) {
+			$.post("{:U('remove','','')}/" + gid, null, function(data) {
+				if(data.status) {
+					tr.remove();
+				} else {
+					$("#tips").text(data.info);
+				}
+			}, "json");
+		}
+		
+	});
+</script>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" href="__CSS__/comm.css" />
+		<style type="text/css">
+			body {
+				padding:0 10px;
+			}
+			.yyg-record-table{
+				width: 100%;
+				border: 0;
+				font-size: 12px;
+				table-layout: fixed;
+				text-align: left;
+			}
+			
+			.yyg-record-table th {
+				background-color: #eee;
+				color: #666;
+				border: 0;
+				margin: 0;
+				height: 30px;
+				line-height: 30px;
+			    padding-left: 10px;
+			}
+			.yyg-record-table td{
+				height: 45px;
+				line-height: 45px;
+			    border-bottom:1px dashed #eee;
+			    color: #333;
+			    padding-left: 10px;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<style type="text/css">
+			body {
+				padding:0 10px;
+			}
+			.yyg-record-table{
+				width: 100%;
+				border: 0;
+				font-size: 12px;
+				table-layout: fixed;
+				text-align: left;
+			}
+			
+			.yyg-record-table th {
+				background-color: #eee;
+				color: #666;
+				border: 0;
+				margin: 0;
+				height: 30px;
+				line-height: 30px;
+			    padding-left: 10px;
+			}
+			.yyg-record-table td{
+				height: 45px;
+				line-height: 45px;
+			    border-bottom:1px dashed #eee;
+			    color: #333;
+			    padding-left: 10px;
+			}
+			
+			.prize-right {
+				background-repeat: no-repeat;
+				background-image: url(__IMG__/prize-right.png);
+				background-position: 50% 50%;
+				width: 16px;
+				height: 16px;
+				vertical-align: middle;
+				display: inline-block;
+				zoom: *;
+			}
+			
+			.r {
+				color: #eb4f38;
+				font-weight: bold;
+			}
+			
+			h5 {
+				margin-top: 0px;
+				background-color: #FDF5E6;	
+				padding: 6px;
+			}
+			
+		</style>
+		<h5>截止到当前商品揭晓时间({$end_time})全站最后的100条参与纪录</h5>
+		<table class="yyg-record-table" cellpadding="0" cellspacing="0">
+			<tbody>
+				<tr>
+					<th style="width:40px"></th>
+					<th style="width: 150px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">会员</th>
+					<th style="width: 230px;">时间</th>
+					<th>购买商品</th>
+					<th style="width: 60px">购物次数</th>
+				</tr>
+				<foreach name="list" item="item">
+				<tr>
+					<td><img src="{$item.userimg}" height="30" width="30" alt="" onerror1="this.src='__ROOT__/Public/P/images/Personal_image1.png';"/></td>
+					<td>{$item.username}</td>
+					<td>
+						{$item.time}.<if condition="$item.ms gt 0">{$item.ms}<else/>000</if>
+						<div class="prize-right"></div>
+						<span class="r">{$item.prizeno}</span>
+					</td>
+					<td style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">(第{$item.qishu}期) {$item.title}</td>
+					<td style="text-align: center;">{$item.count}</td>
+				</tr>
+				</foreach>
+			</tbody>
+		</table>
+		<if condition="$num lt $total">
+			<div class="pagesx">
+				<ul id="Page_Ul">
+					<li id="Page_Total">{$total}条</li>
+					<li id="Page_One"><a href="{:U('Lottery/r', '', '')}/{$gid}/{$qishu}/1">首页</a></li>
+					<if condition="$pageNo gt 1">
+				        <li id="Page_Prev"><a href="{:U('Lottery/r', '', '')}/{$gid}/{$qishu}/{$pageNo - 1}">上一页</a></li>
+				  	</if>
+					<if condition="$pageNo gt 1">
+					  <for start="$minPageNo" end="$pageNo">
+					    		<li class="Page_Num"><a href="{:U('Lottery/r', '', '')}/{$gid}/{$qishu}/{$i}">{$i}</a></li>
+						</for>
+					</if>
+					<li class="Page_This">{$pageNo}</li>
+					<for start="$pageNo+1" end="$maxPageNo+1">
+				    		<li class="Page_Num"><a href="{:U('Lottery/r', '', '')}/{$gid}/{$qishu}/{$i}">{$i}</a></li>
+					</for>
+					<if condition="$pageNo lt $pageCount">
+				        <li id="Page_Next"><a href="{:U('Lottery/r', '', '')}/{$gid}/{$qishu}/{$pageNo + 1}">下一页</a></li>
+				  	</if>
+					<li id="Page_End"><a href="{:U('Lottery/r', '', '')}/{$gid}/{$qishu}/{$pageCount}">尾页</a></li>
+				</ul>
+			</div>
+		</if>
+	</body>
+</html>

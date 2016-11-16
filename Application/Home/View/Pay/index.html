@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+		<meta name="format-detection" content="telephone=no">
+		<title>{$title}</title>
+		<link href="__CSS__/mui.min.css" rel="stylesheet" type="text/css" />
+		<link href="__FONT_ICON__" rel="stylesheet" type="text/css" />
+		<link href="__CSS__/mobile.css" rel="stylesheet" type="text/css" />
+		<link href="__CSS__/android_toast.min.css" rel="stylesheet" type="text/css" />
+
+		<script src="__JQ__"></script>
+		<script src="__JS__/android_toast.min.js"></script>
+	</head>
+
+	<body>
+<!--		<script src="__PING__" type="text/javascript"></script>-->
+		<div class="mui-content" style="padding-top: 0;padding-bottom: 54px;">
+			<ul class="mui-table-view yyg-cart">
+				<foreach name="list" item="item">
+					<li class="mui-table-view-cell yyg-cart-item">
+					<if condition="$item.type eq 3">
+						<div class="yyg-cart-img-container">
+							<img src="{$item.paimai.thumb}"/>
+						</div>
+						<div class="yyg-cart-body">
+							<if condition="$item.isbz eq 1">
+								<p class="yyg-cart-title">{$item.paimai.title}</p>
+								<h5>保证金:¥{$item.paimai.baozhengjin}</h5>
+							<elseif condition="$item.isbz eq -1"/>
+								<p class="yyg-cart-title">( 中标 ) {$item.paimai.title}</p>
+								<h5>中标金额:¥{$item.paimai.baozhengjin}</h5>
+							<else/>
+								<p class="yyg-cart-title">( 立即揭标 ) {$item.paimai.title}</p>
+								<h5>立即揭标价:¥{$item.paimai.lijijia}</h5>
+								<h5>起拍价:¥{$item.paimai.qipaijia}</h5>
+							</if>
+						</div>
+					<else/>
+						<div class="yyg-cart-img-container">
+							<img src="{$item.good.thumb}"/>
+						</div>
+						<div class="yyg-cart-body">
+							<p class="yyg-cart-title">(第 {$item.good.qishu} 期){$item.good.title}</p>
+							<h5>{$item.count}人次/¥{$item.good.danjia}</h5>
+						</div>
+					</if>
+					</li>
+				</foreach>
+			</ul>
+			
+			<p class="yyg-pay-total">总共支付金额：¥ <r> {$total} </r></p>
+			<if condition="$list[0]['isbz'] eq 0">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<label id="yueButton" for="scoreCheckBox" class="mui-input-row mui-checkbox  mui-disabled">
+						<div>积分支付：<span class="yyg-gray">(可用积分{$account.score})</span></div>
+						<input id="scoreCheckBox" type="checkbox">
+					</label>
+				</li>
+			</ul>
+			</if>
+			
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<label id="yueButton" for="yueCheckBox" class="mui-input-row mui-checkbox  mui-disabled">
+						<div>余额支付：<span class="yyg-gray">(余额¥{$account.money})</span></div>
+						<input id="yueCheckBox" type="checkbox">
+					</label>
+				</li>
+			</ul>
+			
+			<ul class="mui-table-view yyg-margin20">
+				<li class="mui-table-view-cell">
+					<a>
+						第三方支付
+						<span class="yyg-cell-right yyg-gray yyg-right-margin">需要支付 <r id="thirdMoney">¥ {$total}</r></span>
+					</a>
+				</li>
+			</ul>
+			
+			<footer class="yyg-footer">
+				<div id="zhifuButton" class="yyg-btn yyg-btn-primary">立即支付</div>
+			</footer>
+		</div>
+		<!--描述：第三方支付-->
+		<div style="display: none;">
+			<form method="post" action="{:U('Pay/jubaopay', '', '')}" id="payForm">
+					<input type="hidden" id="amount" name="amount" value="">	
+					<input type="hidden" id="accountmoney" name="accountmoney" value="">
+					<input type="hidden" id="accountscore" name="accountscore" value="">
+					<input type="hidden" id="accountbgid" name="accountbgid" value="0">
+					<input type="hidden" id="payid" name="payid" value="{$payid}">
+						
+					<input type="hidden" id="goodsName" name="goodsName" value="一元购物">
+					<input type="hidden" id="remark" name="remark" value=""/>
+					<input type="hidden" id="paytype" name="paytype" value="wap"/>
+			</form>
+		</div>
+	</body>
+
+</html>
+<script type="text/javascript">
+	$(document).ready(function() {
+		
+		var money = {$account.money};
+		var score = {$account.score};
+		var total = {$total};
+		var _money = 0;
+		var _score = 0;
+		var _total = total;
+		var thirdMoney = $("#thirdMoney");
+		var yueCheckBox = $("#yueCheckBox").click(function() {
+			if(yueCheckBox.prop("checked")) {
+				if(money > 0) {
+					var needMoney = total - _score/100;
+					_money = Math.min(money, needMoney);
+					_total -= _money;
+					thirdMoney.text("¥ " + _total);
+				} else {
+					yueCheckBox.prop("checked", false);
+					alert("余额不足");
+				}
+			} else {
+				_total += _money;
+				thirdMoney.text("¥ " + _total);
+			}
+		});
+		
+		var scoreCheckBox = $("#scoreCheckBox").click(function() {
+			if(scoreCheckBox.prop("checked")) {
+				if(score > 0) {
+					var needMoney = total - _money;
+					_score = Math.min(score/100, needMoney) * 100;
+					_total -= _score/100;
+					thirdMoney.text("¥ " + _total);
+				} else {
+					scoreCheckBox.prop("checked", false);
+					alert("积分不足");
+				}
+			} else {
+				_total += _score/100;
+				thirdMoney.text("¥ " + _total);
+			}
+		});
+		
+		var zhifuButton = $("#zhifuButton").click(function(){			
+			zhifuButton.attr("disabled", true);
+			if(_total>0)
+			{
+				$("#amount").val(_total);
+				$("accountmoney").val("0");
+				$("accountscore").val("0");
+				document.getElementById('payForm').submit();
+			}
+			else
+			{
+				$.post("{:U('Pay/topay', '', '')}/{$payid}", {
+					score: _score, // 福分支付金额
+					money: _money,  // 余额支付金额
+					third: _total // 第三方支付金额
+				}, function(result) {
+					zhifuButton.remove("disabled");
+					if(result.status == 0) {
+						// 支付成功
+						window.location.href ="{:U('success','','')}";
+					} else {
+						new Android_Toast({content: "支付失败，状态码: " + result.status});
+					}
+				});
+			}//end local pay
+		});
+	});
+</script>

@@ -1,0 +1,151 @@
+
+<link rel="stylesheet" type="text/css" href="__CSS__/header.css?date=20140731">
+<link rel="stylesheet" type="text/css" href="__CSS__/GoodsList.css?date=20140731">
+<style>
+.wrap{width:1190px;}.Current_nav{width:1190px;}.list_Curtit{width:1190px;}.list_class{width:1190px;}.list_Sort{width:1190px;}.goods-iten{width:228px;margin:13px 0 0 11px;}.g-width{width:1190px;}.list_class dd{width:1118px;}.list_class dd li{width:123px;}
+</style>
+<div class="wrap" id="loadingPicBlock">
+	<div class="Current_nav"><a href="__MODULE__">首页</a> &gt; {$title}</div>
+	<div id="current" class="list_Curtit">
+		<h1 class="fl">{$title}</h1>
+		<span id="spTotalCount">(共<em class="orange">{$total|default=0}</em>件相关商品)</span>
+	</div>	
+	<div class="list_class">
+		<dl>
+			<dt>分类</dt>
+			<dd id="ddBrandList">
+				<ul>
+	                <li><a href="{:U('Category/index', '', '')}/{$type}/0/0/{$sort}/1/{$keywords}" <if condition="$cid eq 0">class="ClassCur"</if>>全部</a></li>
+					<foreach name="allCategories" item="item">
+						<li><a href="{:U('Category/index', '', '')}/{$type}/{$item.cid}/0/{$sort}/1/{$keywords}" <if condition="$cid eq $item['cid']">class="ClassCur"</if>>{$item.name}</a></li>
+					</foreach>
+				</ul>
+			</dd>
+		</dl>
+	</div>
+	
+	<div class="list_class">
+		<dl>
+			<dt>品牌</dt>
+			
+			<dd id="ddBrandList_brand" <if condition="$brandsCount gt 17">style="height:54px"</if>>
+				<ul>
+					<li><a href="{:U('Category/index', '', '')}/{$type}/{$cid}/0/1/{$sort}/{$keywords}" <if condition="$bid eq 0">class="ClassCur"</if>>全部</a></li> 
+					<foreach name="brands" item="item">
+						<li><a href="{:U('Category/index', '', '')}/{$type}/{$cid}/{$item.bid}/{$sort}/1/{$keywords}" <if condition="$bid eq $item['bid']">class="ClassCur"</if>>{$item.name}</a></li>   
+					</foreach>
+				</ul>
+			</dd>
+		</dl>
+		<if condition="$brandsCount gt 17">
+		<a id="listClassMore" class="list_classMore" href="javascript:void(0);">展开<i></i></a>
+		</if>
+	</div>
+    <div class="list_Sort">
+	    <dl>
+		    <dt>排序</dt>
+		    <dd>
+		        <a href="{:U('Category/index', '', '')}/{$type}/{$cid}/{$bid}/0/1/{$keywords}" <if condition="$sort eq 0">class="SortCur"</if>>最新</a>
+		        <a href="{:U('Category/index', '', '')}/{$type}/{$cid}/{$bid}/2/1/{$keywords}" <if condition="$sort eq 2">class="SortCur"</if>>人气</a>
+		        <a href="{:U('Category/index', '', '')}/{$type}/{$cid}/{$bid}/3/1/{$keywords}" <if condition="$sort eq 3">class="SortCur"</if>>剩余人次</a>
+		        <if condition="$sort eq 4">
+		        		<a href="{:U('Category/index', '', '')}/{$type}/{$cid}/{$bid}/5/1/{$keywords}" class="Price_Sort SortCur">价格 <i></i></a>
+		        	<elseif condition="$sort eq 5" />
+		        		<a href="{:U('Category/index', '', '')}/{$type}/{$cid}/{$bid}/4/1/{$keywords}" class="Price_Sort SortCur">价格 <s></s></a>
+		        	<else/>
+		        		<a href="{:U('Category/index', '', '')}/{$type}/{$cid}/{$bid}/4/1/{$keywords}" class="Price_Sort">价格 <s></s></a>
+		        </if>
+	        </dd>
+	    </dl>
+	</div>
+	
+	<present name="list">
+	<!--商品列表-->
+	<div class="listContent">
+		<ul class="item" id="ulGoodsList">		
+			<foreach name="list" item="item">
+			<li class="goods-iten" >
+				<div class="pic">
+					<a href="{:U('Index/view', '', '')}/{$item.gid}" target="_blank" title="{$item.title}">
+						<if condition="$item._time lt 86400">
+							<i class="goods_xp"></i>
+						<elseif condition="$item.tuijian eq 1"/>
+							<i class="goods_tj"></i>
+						<elseif condition="$item.renqi eq 1" />
+							<i class="goods_rq"></i>
+						</if>
+						<img alt="{$item.title}" src="{$item.thumb}">
+					</a>
+					<p name="buyCount" style="display:none;"></p>
+				</div>
+				<p class="name">
+					<a href="{:U('Index/view', '', '')}/{$item.gid}" target="_blank" title="{$item.title}">{$item.title}</a>
+				</p>
+				<p class="money">价值：<span class="rmbgray">{$item.money}</span></p>
+				<div class="Progress-bar">
+					<p><span style="width:{$item['canyurenshu']*100/$item['zongrenshu']}%"></span></p>
+					<ul class="Pro-bar-li">
+						<li class="P-bar01"><em>{$item.canyurenshu}</em>已参与人次</li>
+						<li class="P-bar02"><em>{$item.zongrenshu}</em>总需人次</li>
+						<li class="P-bar03"><em>{$item.shengyurenshu}</em>剩余人次</li>
+					</ul>
+				</div>
+				<div class="gl_buybtn">
+					<div class="go_buy">
+						<a href="javascript:;" title="立即购物" class="go_Shopping fl">立即购物</a>
+						<a href="javascript:void(0);" title="加入购物车" class="go_cart fr add-cart" src="{$item.thumb}" gid="{$item.gid}">加入购物车</a>
+					</div>
+				</div>
+			</li>
+			</foreach>
+		</ul>
+		<if condition="$num lt $total">
+		<div class="pagesx">
+			<ul id="Page_Ul">
+				<li id="Page_Total">{$total}条</li>
+				<li id="Page_One"><a href="{:U('Category/index', '', '')}/{$type}/{$cid}/{$bid}/{$sort}/1/{$keywords}">首页</a></li>
+				<if condition="$pageNo gt 1">
+			        <li id="Page_Prev"><a href="{:U('Category/index', '', '')}/{$type}/{$cid}/{$bid}/{$sort}/{$pageNo - 1}/{$keywords}">上一页</a></li>
+			  	</if>
+				<if condition="$pageNo gt 1">
+				  <for start="$minPageNo" end="$pageNo">
+				    		<li class="Page_Num"><a href="{:U('Category/index', '', '')}/{$type}/{$cid}/{$bid}/{$sort}/{$i}/{$keywords}">{$i}</a></li>
+					</for>
+				</if>
+				<li class="Page_This">{$pageNo}</li>
+				<for start="$pageNo+1" end="$maxPageNo+1">
+			    		<li class="Page_Num"><a href="{:U('Category/index', '', '')}/{$type}/{$cid}/{$bid}/{$sort}/{$i}/{$keywords}">{$i}</a></li>
+				</for>
+				<if condition="$pageNo lt $pageCount">
+			        <li id="Page_Next"><a href="{:U('Category/index', '', '')}/{$type}/{$cid}/{$bid}/{$sort}/{$pageNo + 1}/{$keywords}">下一页</a></li>
+			  	</if>
+				<li id="Page_End"><a href="{:U('Category/index', '', '')}/{$type}/{$cid}/{$bid}/{$sort}/{$pageCount}/{$keywords}">尾页</a></li>
+			</ul>
+		</div>
+		</if>
+	</div>
+	<!--商品列表完-->
+	<else/>
+	<!--未找到商品-->
+	<div class="NoConMsg"><span>无相关商品记录哦~！</span></div>
+	<!--未找到商品-->
+	</present>
+	
+</div>
+
+<script type="text/javascript">
+	$(function() {
+		var classMore = $("#listClassMore").click(function() {
+			var height = $("#ddBrandList_brand").height();
+			if(height == 54) {
+				$("#ddBrandList_brand").css("height", "auto");
+				classMore.addClass("MoreClick");
+				classMore.html("收起<i></i>");
+			} else {
+				$("#ddBrandList_brand").css("height", "54px");
+				classMore.removeClass("MoreClick");
+				classMore.html("展开<i></i>");
+			}
+		});
+	});
+</script>

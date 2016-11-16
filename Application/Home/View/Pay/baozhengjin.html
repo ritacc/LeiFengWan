@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+		<meta name="format-detection" content="telephone=no">
+		<title>{$title}</title>
+		<link href="__CSS__/mui.min.css" rel="stylesheet" type="text/css" />
+		<link href="__FONT_ICON__" rel="stylesheet" type="text/css" />
+		<link href="__CSS__/mobile.css" rel="stylesheet" type="text/css" />
+		<link href="__CSS__/android_toast.min.css" rel="stylesheet" type="text/css" />
+
+		<script src="__JQ__"></script>
+		<script src="__JS__/android_toast.min.js"></script>
+	</head>
+
+	<body>
+		<script src="__PING__"></script>
+		<div class="mui-content" style="padding-top: 0;padding-bottom: 54px;">
+			<ul class="mui-table-view yyg-cart">
+				<li class="mui-table-view-cell yyg-cart-item">
+					<div class="yyg-cart-img-container">
+						<img src="{$data.thumb}"/>
+					</div>
+					<div class="yyg-cart-body">
+						<p class="yyg-cart-title"> {$data.title}<r>{$data.subtitle}</r></p>
+						<h5>保证金: ¥ {$data.baozhengjin}</h5>
+					</div>
+				</li>
+			</ul>
+			
+			<p class="yyg-pay-total">总共支付金额：¥ <r> {$total} </r></p>
+			
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<label id="yueButton" for="yueCheckBox" class="mui-input-row mui-checkbox  mui-disabled">
+						<div>余额支付：<span class="yyg-gray">(余额¥{$account.money})</span></div>
+						<input id="yueCheckBox" type="checkbox">
+					</label>
+				</li>
+			</ul>
+			
+			<ul class="mui-table-view yyg-margin20">
+				<li class="mui-table-view-cell mui-collapse">
+					<a class="mui-navigate-right">
+						第三方支付
+						<span class="yyg-cell-right yyg-gray">需要支付 <r id="thridMoney">¥ {$total}</r></span>
+					</a>
+				</li>
+			</ul>
+			
+			<footer class="yyg-footer">
+				<div id="zhifuButton" class="yyg-btn yyg-btn-primary">立即支付</div>
+			</footer>
+		</div>
+	</body>
+
+</html>
+<script type="text/javascript">
+	$(document).ready(function() {
+		var money = {$account.money};
+		var scroe = {$account.score};
+		var total = {$total};
+		var _money = 0;
+		var _score = 0;
+		var _total = total;
+		var thridMoney = $("#thridMoney");
+		var yueCheckBox = $("#yueCheckBox").click(function() {
+			if(yueCheckBox.prop("checked")) {
+				var needMoney = total - _score;
+				_money = Math.min(money, needMoney);
+				_total -= _money;
+				thridMoney.text("¥ " + _total);
+			} else {
+				_total += _money;
+				thridMoney.text("¥ " + _total);
+			}
+		});
+		
+		var zhifuButton = $("#zhifuButton").click(function(){
+			zhifuButton.attr("disabled", true);
+			$.post("{:U('Pay/topay', '', '')}/{$payid}", {
+				score: _score, // 福分支付金额
+				money: _money,  // 余额支付金额
+				third: _total // 第三方支付金额
+			}, function(result) {
+				zhifuButton.remove("disabled");
+				if(result.status == 0) {
+					// 支付成功
+					window.location.href ="{:U('success','','')}";
+				} else {
+					new Android_Toast({content: "支付失败，状态码: " + result.status});
+				}
+			});
+		});
+	});
+</script>

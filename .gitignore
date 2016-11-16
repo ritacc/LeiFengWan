@@ -1,0 +1,13 @@
+Application/Common/Conf/*
+*.log
+*.log
+*.log
+task
+ThinkPHP/Library/Vendor/jubaopay/*
+ThinkPHP/Library/Vendor/Weixinpay/*
+Application/Runtime/Temp/*
+Application/Runtime/Cache/*
+Application/Runtime/Data/task.xml
+Uploads/*
+Application/Runtime/Data/renci.xml
+ThinkPHP/Library/Vendor/phpqrcode/cache/*

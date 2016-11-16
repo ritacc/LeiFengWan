@@ -1,0 +1,251 @@
+<link rel="stylesheet" type="text/css" href="__CSS__/GoodsDetail.css"/>
+<link rel="stylesheet" type="text/css" href="__CSS__/cloud-zoom.css"/>
+<script type="text/javascript" src="__JS__/cloud-zoom.min.js"></script>
+<div class="Current_nav">
+	<a href="__MODULE__">首页</a> <span>&gt;</span>
+	<span>&gt;</span>商品详情
+</div>
+<div class="show_content">
+	<!-- 商品期数 -->
+	<div id="divPeriodList" class="show_Period" style="max-height:99px;">		
+		<div class="period_Open">
+			<a class="gray02" click="off" id="btnOpenPeriod" href="javascript:void(0);">展开<i></i></a>
+			
+		</div>
+		<ul class="Period_list">
+			<!--<li><a <if condition="$data.current neq $qishu">href="{:U('Index/view', '', '')}/{$data.gid}"</if>><b class="period_Ongoing period_ArrowCur" style="padding-left:0px;">第{$data.current}期<i></i></b></a></li>-->
+			<for start="$data['max']" end="0" comparison="gt" step="-1">
+				<li>
+					<a <if condition="$i neq $qishu">href="{:U('Index/view', '', '')}/{$data.gid}/{$i}"</if> class="gray02">
+						<if condition="$i eq $data['current']">
+							<b class="period_Ongoing period_ArrowCur" style="padding-left:0px;">第{$i}期<i></i></b>
+						<else/>
+						第{$i}期
+						</if>
+					</a>
+				</li>
+			</for>
+		</ul>
+	</div>
+	<script>
+		// 在对一行第9个位置插入一个空展位格
+		$("<li>").insertAfter($(".Period_list li:eq(7)"));
+	
+		$("#btnOpenPeriod").click(function(){
+			var ui_obj = $("#divPeriodList li");
+			if($(this).attr("click")=='off'){
+				$("#divPeriodList").css("max-height",(Math.ceil(ui_obj.length / 9) * 33)+"px");	
+				$(this).attr("click","on");
+				$(this).html("收起<s></s>");
+				
+			}else{
+				$("#divPeriodList").css("max-height","99px");	
+				$(this).attr("click","off");
+				$(this).html("展开<i></i>");
+			}			
+		});
+	</script>	
+	<!-- 商品信息 -->
+	<div class="Pro_Details">
+		<h1><span>(第{$data.qishu}期)</span><span >{$data.title}</span><em style="color: red;">{$data.subtitle}</em></h1>
+		<div class="Pro_Detleft">
+			<div class="clould-zoom">
+				<div class="clould-zoom-big">
+					<img src="{$firstImage.image_url}" />
+					<div class="clould-zoom-bird-outter">
+						<div class="clould-zoom-bird"></div>
+					</div>
+				</div>
+				<div class="clould-zoom-view" style="background-image: url({$firstImage.image_url});"></div>
+				<div class="cloud-zoom-scroll">
+					<a class="colud-zoom-prev cloud-zoom-disabled"><i>&nbsp;</i></a>
+					<ul class="clould-zoom-list">
+						<foreach name="images" item="item">
+						<li class="cloud-zoom-item" ref="{$item.image_url}">
+							<img src="{$item.image_url}" />
+						</li>
+						</foreach>
+						<li class="cloud-zoom-clear"></li>
+					</ul>
+					<a class="colud-zoom-next"><i>&nbsp;</i></a>
+				</div>
+			</div>
+			<script type="text/javascript">
+				$(function() {
+					$(".clould-zoom").cloudZoom();
+				});
+			</script>		
+			<present name="data.lastprizer">
+			<div class="Pro_GetPrize">	
+				<h2>上期获得者</h2>
+				<div class="GetPrize">				    
+					<dl>
+						<dt><a rel="nofollow" target="_blank"><img width="80" height="80" alt="" src="{$data.lastprizer.img}"></a></dt>
+						<dd class="gray02">
+							<p>恭喜 <a target="_blank" class="blue">{$data.lastprizer.username}</a>获得了本商品</p>
+							<p>揭晓时间：{$data.lastprizer.end_time}</p>
+							<p>购物时间：{$data.lastprizer.record_time}</p>
+							<p>幸运购物码：<em class="orange Fb">{$data['lastprizer']['prizecode']+10000001}</em></p>
+						</dd>
+					</dl>				
+				</div>
+			</div>
+			</present>
+		</div>
+		<div class="Pro_Detright">
+			<if condition="$data.prizeno gt 0">
+			<else/>
+			<p class="Det_money">价值：<span class="rmbgray">{$data.money}</span></p>
+			</if>
+			<if condition="$data.status eq 3">
+				<include file="view_end"/>
+			<elseif condition="$data.status eq 2"/>
+				<include file="view_animation"/>
+			<else/>
+				<include file="view_contents"/>
+			</if>
+			
+			<!--显示揭晓动画 end-->		
+			<div class="Security">
+				<ul>
+					<li><a><i></i>100%公平公正</a></li>
+					<li><a><s></s>100%正品保证</a></li>
+					<li><a><b></b>全国免费配送</a></li>
+				</ul>
+			</div>			
+			<if condition="$data.status neq 2">
+			<div class="Pro_Record">
+				<ul id="ulRecordTab" class="Record_tit">
+					<li class="NewestRec Record_titCur">最新购物记录</li>
+					<li class="MytRec">我的购物记录</li>
+					<li class="Explain orange">什么是壹圆购物？</li>
+				</ul>
+				<div class="Newest_Con _hiden" style="">
+					<present name="records">
+					<ul>
+						<foreach name="records" item="item">
+						<li> 
+						<a target="_blank">
+							<php>if (ereg('^http://', $item['img'])) {</php>
+								<img src="{$item.img}" border="0" alt="" width="20" height="20" onerror="this.src='__ROOT__/Public/P/images/Personal_image1.png';"/>
+							<php>}else{</php>
+								<img src="{$item.img}" border="0" alt="" width="20" height="20" onerror="this.src='__ROOT__/Public/P/images/Personal_image1.png';"/>
+							<php>}</php>
+						</a>					
+						<a target="_blank" class="blue">{$item.username}</a>
+						<!-- todo: IP -->			
+						{$item.time} 购物了
+						<em class="Fb gray01">{$item.count}</em>人次</li>
+						</foreach>
+					</ul>
+					<else/>
+					<p style="">暂时没有人购买</p>
+					</present>
+				</div>
+				
+				<!--我的购物记录-->
+				<div class="My_Record _hiden" style="display: none;">
+					<present name="myrecords">	
+					<ul>				
+						<foreach name="myrecords" item="item">
+						<li>{$item.time}  购买了  {$item.count}  个购物码</li>						
+						</foreach>
+					</ul>
+					<else/>				
+					<div class="My_RecordReg">
+						<b class="gray01">看不到？是不是没登录或是没注册？ 登录后看看</b>
+						<a href="{:U('Main/login')}" class="My_Signbut">登录</a><a href="{:U('Main/register')}" class="My_Regbut">注册</a>
+					</div>
+					</present>	
+				</div>
+				<!--/我的购物记录-->
+				<div class="Newest_Con _hiden" style="display: none;">
+					<p class="MsgIntro">购是指只需1元就有机会买到想要的商品。即每件商品被平分成若干“等份”出售，每份1元，当一件商品所有“等份”售出后，根据购物规则产生一名幸运者，该幸运者即可获得此商品。</p>
+					<p class="MsgIntro1">以“快乐购物，惊喜无限”为宗旨，力求打造一个100%公平公正、100%正品保障、寄娱乐与购物一体化的新型购物网站。</p>
+				</div>
+			</div>	
+			</if>
+		</div>
+	</div>
+</div>
+<!-- 商品信息导航 -->
+<div class="ProductTabNav">
+	<div id="divProductNav" class="DetailsT_Tit">
+		<div class="DetailsT_TitP">
+			<ul>
+				<if condition="$data.prizeno gt 0">
+					<li class="Product_DetT DetailsTCur"><span class="DetailsTCur">计算结果</span></li>
+					<li class="Product_DetT"><span>商品详情</span></li>
+				<else/>
+				<li class="Product_DetT DetailsTCur"><span class="DetailsTCur">商品详情</span></li>
+				</if>
+				<li id="liUserBuyAll" class="All_RecordT"><span class="">所有参与记录</span></li>
+				<!--<li class="Single_ConT"><span class="">晒单</span></li>-->
+			</ul>
+			<!-- <p><a id="btnAdd2Cart" href="javascript:;" class="white DetailsT_Cart"><s></s>加入购物车</a></p> -->
+		</div>
+	</div>
+</div>
+ 
+<div id="divContent" class="Product_Content">
+	<if condition="$data.prizeno gt 0">
+	<!-- 结算结果 -->
+	<div id="jieguo" class="AllRecordCon divContent">
+		<iframe id="iframea_jieguo" g_src="{:U('Lottery/r', '', '')}/{$gid}/{$qishu}"  src="{:U('Lottery/r', '', '')}/{$gid}/{$qishu}" 
+			style="width:930px; border:none;height:810px" frameborder="0" scrolling="no"></iframe></div>
+			
+    <!-- 计算结果 -->
+   	</if>
+	<!-- 商品内容 -->
+	<div class="Product_Con divContent" <if condition="$data.prizeno gt 0"> style="display: none;"</if>>{$data.content}</div>
+    <!-- 商品内容 -->
+    
+    <!-- 购买记录20条 -->
+	<div id="bitem" class="AllRecordCon divContent" style="display: none;">
+		<iframe id="iframea_bitem" g_src="{:U('Index/record', '', '')}/{$gid}/{$qishu}"  src="{:U('Index/record', '', '')}/{$gid}/{$qishu}" 
+			style="width:930px; border:none;height:600px" frameborder="0" scrolling="no"></iframe>		
+	</div> 
+<script type="text/javascript">
+function set_iframe_height(fid,did,height){	
+	$("#"+fid).css("height",height);	
+}
+
+$(function(){
+	$("#ulRecordTab li").click(function(){
+		var add=$("#ulRecordTab li").index(this);
+		$("#ulRecordTab li").removeClass("Record_titCur").eq(add).addClass("Record_titCur");
+		$(".Pro_Record ._hiden").hide().eq(add).show();
+	});
+	
+	var DetailsT_TitP = $(".DetailsT_TitP ul li");
+	var divContent    = $("#divContent .divContent");	
+	DetailsT_TitP.click(function(){
+		var index = $(this).index();
+		DetailsT_TitP.removeClass("DetailsTCur").eq(index).addClass("DetailsTCur");
+
+//		var iframe = divContent.hide().eq(index).find("iframe");
+//		if (typeof(iframe.attr("g_src")) != "undefined") {
+//		  	 iframe.attr("src",iframe.attr("g_src"));
+//			 iframe.removeAttr("g_src");
+//		}
+		divContent.hide().eq(index).show();
+	});
+	
+	
+	$("#btnUserBuyMore").click(function(){
+		fouli.removeClass("DetailsTCur").eq(1).addClass("DetailsTCur");
+		
+		$("#divContent .hide").hide().eq(1).show();
+		$("html,body").animate({scrollTop:941},1500);
+		$("#divProductNav").addClass("nav-fixed");
+	});
+	
+	$(window).scroll(function(){
+		if($(window).scrollTop()>=941){
+			$("#divProductNav").addClass("nav-fixed");
+		}else if($(window).scrollTop()<941){
+			$("#divProductNav").removeClass("nav-fixed");
+		}
+	});
+});
+</script> 

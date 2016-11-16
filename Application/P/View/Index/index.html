@@ -1,0 +1,275 @@
+<link rel="stylesheet" type="text/css" href="__CSS__/header.css?date=20140731">
+<!-- 商品分类 -->
+<div id="divSortList" class="m-all-sort" style="display: block;">
+	<foreach name="allCategories" item="c">
+		<dl>
+		     <dt><a href="{:U('Category/index', '', '')}/0/{$c.cid}">{$c.name}</a></dt>
+		     <dd>
+			     <foreach name="c['brands']" item="b">
+			     	<a href="{:U('Category/index', '', '')}/0/{$c.cid}/{$b.bid}">{$b.name}</a>
+			     </foreach>
+		     </dd>
+		 </dl>
+	</foreach>
+ </div>
+ 
+ <!-- 幻灯片 -->
+<link rel="stylesheet" href="__CSS__/swiper.min.css" />
+<link rel="stylesheet" href="__CSS__/comm1.css" />
+<script src="__JS__/swiper.jquery.min.js"></script>
+<style type="text/css">
+	a.yyg-prize-lasttime {
+		height: 35px;
+		font-size: 17px;
+		color: red!important;
+		display: block;
+		line-height: 35px;
+		text-align: center;
+	}
+	
+	.yyg-prize-endtime {
+		position: absolute;
+		display: block;
+		left: 0px;
+		right:0px;
+		bottom: 165px;
+		height: 35px;
+		font-size: 17px;
+		color: #f60;
+		line-height: 35px;
+		text-align: center;
+		background-image: url(__IMG__/Guide_13.jpg);
+	}
+</style>
+<div class="home-banner fl">
+	<div id="div_slide" class="slide-scroll">
+		 <!-- Slider main container -->
+		<div class="swiper-container">
+		    <!-- Additional required wrapper -->
+		    <div class="swiper-wrapper">
+		        <!-- Slides -->
+		        <foreach name="slides" item="item">
+		    			<div class="swiper-slide"><a href="{$item.link}" class="swiper-img" style="background-image: url('{$item.img}');"></a></div>
+		        </foreach>
+		    </div>
+		    <!-- If we need pagination -->
+		    <div class="swiper-pagination"></div>
+		</div>
+    </div>
+    <div class="slide-comd">  
+    	<foreach name="tuijians" item="item">
+	    	<div class="commodity">
+	        <ul>
+	            <li class="comm-info fl">
+	                <span><a href="{:U('Index/view', '', '')}/{$item.gid}" target="_blank" title="{$item.title}">{$item.title}</a></span>
+	                <p class="gray">已参与<em class="orange">{$item.canyurenshu}</em>人次</p>
+	            </li>
+	            <li class="comm-pic fr">
+	            		<a href="{:U('Index/view', '', '')}/{$item.gid}" target="_blank" title="{$item.title}" rel="nofollow">
+                		<cite>
+                   		<img alt="{$item.title}" src="{$item.thumb}" border="0"  width="100" height="100"/>
+                		</cite>
+            			<span class="F_goods_xp"><i>新品</i></span>
+	           	 </a>
+	            </li>
+	        </ul>
+	    </div>
+	</foreach>                
+	</div>
+</div>
+
+<div class="home-event fr">
+    <div class="what-1yyg">
+        <a id="what_1yyg" href="#" title="什么是壹圆购物？30秒了解">
+            <img src="__IMG__/index-come.gif" alt=""></a>
+    </div>
+    <div class="honesty">
+        <ul>
+            <li><a  title="诚信网站"><i class="i1"></i>诚信网站</a></li>
+            <li><a  rel="nofollow" title="可信网站"><i class="i2"></i>可信网站</a></li>
+            <li><a  rel="nofollow" title="电商诚信"><i class="i3"></i>电商诚信</a></li>
+            <li><a  rel="nofollow" title="安信宝"><i class="i4"></i>安信宝</a></li>
+            <li><a  rel="nofollow" title="监督管理局"><i class="i5"></i>监督管理局</a></li>
+            <li><a  rel="nofollow" title="更多"><i class="i6"></i>更多</a></li>
+        </ul>
+    </div>
+    <div class="index_news">
+        <dl>
+            <dt>新闻公告</dt>
+        </dl>
+    </div>
+</div>
+
+<!-- 商品列表 -->
+<div class="g-wrap w1190">
+	<div class="g-title">
+        <h3 class="fl">最新揭晓</h3>
+        <div class="m-other fr">
+            <cite>
+                <a href="{:U('Lottery/index', '', '')}" target="_blank" title="查看全部商品">查看全部商品</a>
+            </cite>
+        </div>
+    </div>
+    <div class="g-list">
+   		<ul id="ulNewAwary">
+		<foreach name="zuixins" item="item">
+            <li >
+                <dl>
+                    <dt><a href="{:U('Index/view','','')}/{$item.gid}/{$item.qishu}" target="_blank" title="第{$item.qishu}期 {$item.title}" rel="nofollow">
+                        <img src="{$item.thumb}" alt="第{$item.qishu}期 {$item.title}" width="300" height="300" /></a></dt>
+                    <dd class="f-gx">
+                        <div class="f-gx-user">
+                        		<if condition="$item.username neq null">
+	                            <span>恭喜</span>
+	                            <span class="blue"><a href="{:U('Index/view','','')}/{$item.gid}/{$item.qishu}" target="_blank" title="{$item.username}" class="blue" >{$item.username}</a></span>
+	                            <span>获得</span>
+	                        <else/>
+								<h5><i class="iconfont icon-yihan"></i>很遗憾，本期没有幸运获得者</h5>	
+							</if>
+                        </div>
+                    </dd>
+                    <dd class="u-name"><a href="{:U('Index/view','','')}/{$item.gid}/{$item.qishu}" target="_blank" title="第{$item.qishu}期 {$item.title}">第{$item.qishu}期 {$item.title}</a></dd>
+                </dl>
+                <cite></cite>
+            </li>
+        </foreach>
+    		</ul>
+	</div>
+    
+    <div class="g-title">
+        <h3 class="fl">热门推荐</h3>
+        <div class="m-other fr">
+            <a href="{:U('Category/index', '', '')}/1" target="_blank" title="更多" class="u-more">更多</a>
+        </div>
+    </div>
+    <div class="g-hot clrfix">
+    		<div class="g-hotL fl">
+    			<foreach name="remens" item="item">
+			<div class="g-hotL-list">
+				<div class="g-hotL-con">
+					<ul>
+						<li class="g-hot-pic">
+						<a title="第{$item.qishu}期 {$item.title}" target="_blank" href="{:U('Index/view','','')}/{$item.gid}">
+						<img src="{$item.thumb}" alt="第{$item.qishu}期 {$item.title}">
+						</a>
+						</li>
+						<li class="g-hot-name">
+						<a title="第{$item.qishu}期 {$item.title}" target="_blank" href="{:U('Index/view','','')}/{$item.gid}">第{$item.qishu}期 {$item.title}</a>
+						</li>
+						<li class="gray">价值：￥{$item.money}</li>
+						<li class="g-progress">
+							<dl class="m-progress">
+								<dt title="已完成">
+									<b style="width:{$item['canyurenshu']*100/$item['zongrenshu']}%"></b>
+								</dt>
+								<dd>
+									<span class="orange fl"><em>{$item.canyurenshu}</em>已参与</span>
+									<span class="gray6 fl"><em>{$item.zongrenshu}</em>总需人次</span>
+									<span class="blue fr"><em>{$item.shengyurenshu}</em>剩余</span>
+								</dd>
+							</dl>
+						</li>
+						<li>
+							<if condition="$item.status eq 2">
+							<a class="yyg-prize-lasttime" title="前往查看" target="_blank" href="{:U('Index/view','','')}/{$item.gid}">
+								正在开奖: <span countdown="{$item.lasttime}"></span>
+							</a>
+							<else/>
+							<a class="u-imm" title="立即壹圆购物" target="_blank" href="{:U('Index/view','','')}/{$item.gid}">立即壹圆购物</a>
+							</if>
+						</li>
+					</ul>
+				</div>
+			</div>
+    			</foreach>
+    		</div>
+    		<div class="g-hotR fr">
+            <div class="u-are">正在购物</div>
+            <div class="g-zzyging">
+                <ul id="UserBuyNewList">
+                		<foreach name="records" item="item">
+                    <li>
+                        <span class="fl"><a href="{:U('Index/view', '', '')}/{$item.gid}" target="_blank" rel="nofollow" title="{wc:fun:get_user_name($gorecord)}">
+                            <img alt="" src="{$item.thumb}" /><i></i></a></span>
+                        <p>
+                            <a href="{:U('Index/view', '', '')}/{$item.gid}" target="_blank"  title="{$item.title}" class="blue">{$item.username}</a><br />
+                            <a href="{:U('Index/view', '', '')}/{$item.gid}"  target="_blank" title="{$item.title}" class="u-ongoing">{$item.title}</a>
+                        </p>
+                    </li>
+                    </foreach>
+                </ul>
+            </div>
+            <div class="u-see100 hidden"><a href="{:U('Index/history', '', '')}" target="_blank">查看最新100条记录</a></div>
+        </div>
+    </div>
+    
+    <div class="g-title m-sort">
+        <h3 class="fl">即将揭晓</h3>
+        <div class="fr">
+            <foreach name="allCategories" item="c">
+            <a href="{:U('Category/index', '', '')}/2/{$c.cid}" target="_blank" title="{$c.name}">{$c.name}</a>		
+            </foreach>
+            <a href="{:U('Category/index', '', '')}/2" target="_blank" title="全部">全部</a>
+        </div>
+    </div>
+    <div class="announced-soon clrfix" id="divSoonGoodsList">
+    	<foreach name="jijiagns" item="item">
+    		<div class="soon-list-con">
+			<div class="soon-list">
+				<ul>
+					<li class="g-soon-pic">
+						<a title="第{$item.qishu}期 {$item.title}" target="_blank" href="{:U('Index/view','','')}/{$item.gid}">
+							<img id="img_274277" src="{$item.thumb}" alt="第{$item.qishu}期 {$item.title}">
+							<if condition="$item.status lt 2">
+							<div class="yyg-prize-endtime">
+								剩余时间：<span countdown="{$item.end}"></span>
+							</div>
+							</if>
+						</a>
+					</li>
+					<li class="soon-list-name">
+						<a title="第{$item.qishu}期 {$item.title}" target="_blank" href="{:U('Index/view','','')}/{$item.gid}">第{$item.qishu}期 {$item.title}</a>
+					</li>
+					<li class="gray">价值：￥{$item.money}</li>
+					<li class="g-progress">
+						<dl class="m-progress">
+							<dt title="">
+								<b style="width:{$item['canyurenshu']*100/$item['zongrenshu']}%;"></b>
+							</dt>
+							<dd>
+								<span class="orange fl"><em>{$item.canyurenshu}</em>已参与</span>
+								<span class="gray6 fl"><em>{$item.zongrenshu}</em>总需人次</span>
+								<span class="blue fr"><em>{$item.shengyurenshu}</em>剩余</span>
+							</dd>
+						</dl>
+					</li>
+					<li>
+						<if condition="$item.status eq 2">
+						<a class="yyg-prize-lasttime" title="前往查看" target="_blank" href="{:U('Index/view','','')}/{$item.gid}">
+							正在开奖: <span countdown="{$item.lasttime}"></span>
+						</a>
+						<else/>
+						<a class="u-now" title="立即壹圆购物" target="_blank" href="{:U('Index/view','','')}/{$item.gid}">立即壹圆购物</a>
+						<a class="u-cart add-cart" title="加入到购物车" href="javascript:void(0);" src="{$item.thumb}" gid="{$item.gid}">
+							<s></s>
+						</a>
+						</if>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</foreach>
+    </div>
+</div>
+
+<script type="text/javascript">
+	$(function() {
+		var mySwiper = new Swiper ('.swiper-container', {
+	      // Optional parameters
+	      direction: 'horizontal',
+	      pagination: '.swiper-pagination',
+	      autoplay: 3000,
+	      loop: true
+	   });
+	});
+</script>

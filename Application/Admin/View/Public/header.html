@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<!--<link rel="icon" href="../../favicon.ico">-->
+
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+      <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+		<title>{$title}</title>
+
+		<!-- Bootstrap core CSS -->
+		<link href="__B_CSS__" rel="stylesheet">
+		<link href="__CSS__/bootstrap.css" rel="stylesheet">
+		<link href="__CSS__/index.css" rel="stylesheet">
+		<link href="__CSS__/common.css" rel="stylesheet">	
+		<!--<link href="/Application/admin/View/css/global.css" rel="stylesheet">-->
+			<style type="text/css">
+				.navv .current{background:url(__IMG__/nav_bg_1.png) no-repeat 0px 0px;border:0px solid #000;}
+				
+				.navv .current a{
+					display:block;
+					left:20px;
+					height:40px;
+					text-align:center;
+					padding-right:20px;
+					background:url(__IMG__/nav_bg_1.png) no-repeat right top;
+					top:0px;
+				}
+				
+				.navv .normal.active a {
+					color: #fff;
+					font-weight: bold;
+				}
+				
+				#navbar ul li a{color: #ffffff;}
+				#navbar ul li p{color: #ffffff;}
+				
+			</style>
+	</head>
+
+	<body style="padding-top: 90px;">
+		<nav class="navbar navbar-inverse navbar-fixed-top" style="background: #2a8bbb; margin-bottom: 0px; height: 80px;">
+			<div class="container-fluid">
+				<div class="navbar-header" id="header">
+					
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<div class="logo"></div>
+					<!--<a class="navbar-brand" href="#">后台管理系统</a>-->
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav navbar-right" >
+						<li>
+							<p class="navbar-text">{$Think.session.username}</p>
+						</li>
+						<li><a href="{:U('User/change')}">修改密码</a></li>
+						<li><a href="{:U('Public/logout')}">退出</a></li>
+					</ul>
+				</div>
+			</div>
+		<ul id="mainNavTabs" class="navv navbar-fixed-top" style="position: absolute; top:40px; left:500px; z-index: 100; background: none; border-bottom: none; ">
+		<if condition="ROLE eq 1"><li id="sysmgr" class="normal"><a>系统管理</a></li></if>
+		<li id="gdmgr" class="normal"><a>商品管理</a></li>
+		<li id="mbmgr" class="normal"><a>会员管理</a></li>
+		<li id="marticles" class="normal"><a>文章管理</a></li>
+		<li id="uimgr" class="normal"><a>界面管理</a></li>
+		<li id="report" class="normal"><a>购买管理</a></li>
+</ul>
+		</nav>
+
+		<!-- Bootstrap core JavaScript
+			================================================== -->
+		<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+		<script src="__JQ__"></script>
+		<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+		<script src="__B_JS__"></script>
+
+		<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+		<script src="__IE10_BUG__"></script>
+		
+		<script src="__JS__/jquery.maxlength.min.js"></script>
+		<!--<script src="__JS__/validator.min.js"></script>-->
+		<script src="__JS__/app.js"></script>

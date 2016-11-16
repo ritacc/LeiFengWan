@@ -1,0 +1,131 @@
+
+<div id="subNavTabs" style="width: 220px;" >
+	<if condition="ROLE eq 1">
+	<ul id="s_sysmgr" class="nav-sidebar hidden">
+		
+		<li id="usrmgr" class="head">
+			<a>管理员管理</a>
+			<ul>
+				<li id="usrlst" class="set"><a href="__MODULE__/User">管理员列表</a></li>
+				<li id="addusr" class="set"><a href="__MODULE__/User/add">添加管理员</a></li>
+				<li id="chagpwd" class="set"><a href="__MODULE__/User/change">修改密码</a></li>
+			</ul>
+		</li>
+		<li id="messgage">
+			<a>短信</a>
+			<ul>
+				<li id="messageindex"><a href="__MODULE__/Msg/msgxc">活动短信</a></li>
+				<li id="messagelist"><a href="__MODULE__/Msg/msglist">发送短信列表</a></li>
+			</ul>
+		</li>
+	</ul>
+	</if>
+	<ul id="s_gdmgr" class="nav-sidebar hidden">
+		<li id="msmgr">
+			<a>秒杀商品管理</a>
+			<ul>
+				<li id="mslst"><a href="__MODULE__/Miaosha">秒杀商品列表</a></li>
+				<li id="addms"><a href="__MODULE__/Miaosha/add">添加秒杀商品</a></li>
+			</ul>
+		</li>
+		<!--<li id="xgmgr">
+			<a>限购商品管理</a>
+			<ul>
+				<li id="xglst"><a href="__MODULE__/Xiangou">限购商品列表</a></li>
+				<li id="addxg"><a href="__MODULE__/Xiangou/add">添加限购商品</a></li>
+			</ul>
+		</li>-->
+		<li id="pmmgr">
+			<a>拍卖商品管理</a>
+			<ul>
+				<li id="pmlst"><a href="__MODULE__/Paimai">拍卖商品列表</a></li>
+				<li id="addpm"><a href="__MODULE__/Paimai/add">添加拍卖商品</a></li>
+			</ul>
+		</li>
+		<li id="cmgr">
+			<a>分类管理</a>
+			<ul>
+				<li id="clist"><a href="__MODULE__/Category">商品分类列表</a></li>
+				<li id="blist"><a href="__MODULE__/Brand">品牌管理</a></li>
+				<li id="addb"><a href="__MODULE__/Brand/add">添加品牌</a></li>
+			</ul>
+		</li>
+	</ul>
+	<ul id="s_mbmgr" class="nav-sidebar hidden">
+		<li id="mbmgr_">
+			<a>会员管理</a>
+			<ul>
+				<li id="mblst"><a href="__MODULE__/Member">会员列表</a></li>
+				<li id="fdmb"><a href="__MODULE__/Member/find">查找会员</a></li>
+				<li id="addmb"><a href="__MODULE__/Member/add">添加会员</a></li>
+				<li id="userrecharge"><a href="__MODULE__/Report/userrecharge">充值记录</a></li>
+				<li id="buylist"><a href="__MODULE__/Report/buylist">消费记录</a></li>
+			</ul>
+		</li>
+	</ul>
+	<ul id="s_marticles" class="nav-sidebar hidden">
+		<li id="marticles_">
+			<a>文章管理</a>
+			<ul>
+				<li id="cat"><a href="__MODULE__/ArticleCats">分类列表</a></li>
+				<li id="articles"><a href="__MODULE__/Articles">文章列表</a></li>
+			</ul>
+		</li>
+	</ul>
+	<ul id="s_uimgr" class="nav-sidebar hidden">
+		<li id="mbmgr_">
+			<a>界面管理</a>
+			<ul>
+				<li id="wxhdlist"><a href="__MODULE__/Slide">微信幻灯管理</a></li>
+				<!--<li id="aclist"><a href="__MODULE__/Article">文章管理</a></li>-->
+			</ul>
+		</li>
+	</ul>
+	<ul id="s_report" class="nav-sidebar hidden">
+		<li id="gwmgr_">
+			<a>购物管理</a>
+			<ul>
+				<li id="buylistadmin"><a href="__MODULE__/Report/buylistadmin">获奖记录</a></li>
+				<li id="cashoutlist"><a href="__MODULE__/Report/cashoutlist">提现申请</a></li>
+				<!--<li id="aclist"><a href="__MODULE__/Article">文章管理</a></li>-->
+			</ul>
+		</li>
+		<li id="pmmgr_">
+			<a>拍卖管理</a>
+			<ul>
+				<li id="paimaiadmin"><a href="__MODULE__/Report/paimaiadmin">中标记录</a></li>
+				<!--<li id="aclist"><a href="__MODULE__/Article">文章管理</a></li>-->
+			</ul>
+		</li>
+	</ul>
+	
+	<div class="nav-sidebar-footer">
+	</div>
+</div>
+
+<script type="text/javascript">
+$(function() {
+	var mainNavTabs = $("#mainNavTabs");
+	var subNavTabs = $("#subNavTabs");
+	
+	$("#{$pid|default='sysmgr'}", mainNavTabs).addClass("active");
+	$("#s_{$pid|default='sysmgr'}", subNavTabs).removeClass("hidden");
+	<present name="mid">
+	$("#{$mid}", subNavTabs).addClass("active");
+	</present>
+	
+	var pid = "{$pid|default='sysmgr'}";
+	mainNavTabs.on("click", "li", function() {
+		var _pid = $(this).attr("id");
+		if(_pid != pid) {
+			if(pid) {
+				$("#" + pid, mainNavTabs).removeClass("active");
+				$("#s_" + pid, subNavTabs).addClass("hidden");
+			}
+			pid = _pid;
+			$("#" + pid, mainNavTabs).addClass("active");
+			$("#s_" + pid, subNavTabs).removeClass("hidden");
+		}
+	});
+});
+</script>

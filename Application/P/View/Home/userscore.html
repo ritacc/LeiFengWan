@@ -1,0 +1,96 @@
+ 
+<div class="main-content clearfix">
+<include file="left" />
+	<link rel="stylesheet" type="text/css" href="__CSS__/layout-recharge.css"/>
+	<div class="R-content">
+		<div class="member-t"><h2>账户积分</h2></div>
+		<div class="last">
+			<ul>
+				<li><h3>可用积分：</h3><b class="orange">{$data.score}</b>	</li>
+				<li>			
+					<h3>可用金钱：</h3>	<b class="orange">
+					
+					{$data.score}积分 / 100积分<h3>(1元=100积分)</h3>	 = {$data["score"]/100}元<h3>(取整)</h3>	
+					</b>
+				</li>
+			</ul>
+		</div>
+		<div id="divList0" class="list-tab recordList">
+			<ul class="listTitle">
+				<li class="leftTitle w150 " >时间</li>
+				<li class="price">渠道</li>
+				<li class="regard w250 ">获得/支出</li>
+			</ul>
+	 		<if condition="$count eq 0">
+				 <div class="tips-con"><i></i>您还未有积分哦。</div>
+			</if>
+				<foreach name="list" item="c">
+					 <ul>						
+				 		<li class="leftTitle ztime w150 ">{$c.time}</li>				 		
+						<li class="scoresource">{$c.scoresource}</li>
+						<li class="regard w250 "> 
+							<font color="#0c0" class="score">{$c.score}</font> 
+						</li>
+					</ul>
+				</foreach>
+		</div>
+	         
+			<div id="divPageNav" class="page_nav">
+	        	 <include file="Public:pager"/>
+	        </div>
+	 
+	</div>
+
+</div>
+<ul id="Template" class="mui-hidden">
+	<li class="leftTitle ztime"></li>
+	<li class="scoresource"></li>
+	<li class="regard"> 
+		<font color="#0c0" class="score"> </font> 
+	</li>
+</ul>
+<script>
+	$(function(){ 
+		// 全部商品翻页
+		var pageNumfinish = 2;
+		var goodListfinish = $("#divList0");
+		var Template = $("#Template");
+		 
+		var useTemplatefinish;
+		var orderTypefinish = 1;
+		function pageAll(clear) {
+			if(clear) {
+				pageNumfinish = 1;
+			}
+			$.get("{:U('pagescore', '', '')}/20/" + pageNumfinish, {
+				type: orderTypefinish
+				 
+			}, function(list) {
+				if(clear) {goodListfinish.html("");}
+				if(pageNumfinish ==1 && list && list.length==0){
+					goodListfinish.append('<div class="tips-con"><i></i>暂无记录</div>');
+					return;
+				}
+				if(list && list.length > 0) { pageNumfinish++; }
+	       		$.each(list, function() {
+	       			useTemplatefinish=Template;
+	       			var item = useTemplatefinish.clone().removeClass("mui-hidden").removeAttr("id");
+					$(".ztime", item).text(this.time);
+					$(".score", item).text(this.score);
+					$(".scoresource", item).text(this.scoresource);
+	       			goodListfinish.append(item);
+	       		});
+	       });
+		}
+//		$(document).bind("scroll", onscrollend);
+//		function onscrollend() {
+//			if ($(window).scrollTop() + $(window).height() == $(document).height()) {
+//     			console.info("滚动到底了");
+//				pageAll();
+//			}
+//		}	
+		window.onScrollEnd(pageAll);
+		
+	});
+</script>
+ 

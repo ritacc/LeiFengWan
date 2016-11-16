@@ -1,0 +1,141 @@
+
+<header class="mui-bar mui-bar-nav">
+  <button class="mui-btn mui-btn-link mui-btn-nav mui-pull-left" onclick="history.go(-1)">
+    <span class="mui-icon mui-icon-left-nav" ></span>
+    	返回
+  </button>
+  <h1 class="mui-title">{$title}</h1>
+</header>
+
+<div class="mui-content">
+    <div class="g-Total gray9">您的当前余额：<span class="orange arial">0.00</span>元</div>
+    <section class="clearfix g-member">
+        <div class="g-Recharge">
+	        <ul id="ulOption">
+		        <li money="10"><a href="javascript:void(0);" class="z-sel">10元<s></s></a></li>
+		        <li money="20"><a href="javascript:void(0);">20元<s></s></a></li>
+		        <li money="50"><a href="javascript:void(0);">50元<s></s></a></li>
+		        <li money="100"><a href="javascript:void(0);">100元<s></s></a></li>
+		        <li money="200"><a href="javascript:void(0);">200元<s></s></a></li>
+		        <li money="500"><a href="javascript:void(0);">500元<s></s></a></li>
+	        </ul>
+	    </div>
+	    <article class="clearfix mt10 m-round g-pay-ment g-bank-ct">
+		    <ul id="ulBankList">
+				<li class="gray6">充值金额<em class="orange" id="addrechange">10.00</em>元</li>
+			</ul>
+	    </article>
+	    <div class="mt10 f-Recharge-btn">
+		    <button id='btnrechange' type="button" class="mui-btn mui-btn-block mui-btn-primary">确认充值</button>
+	    </div>
+    </section>
+</div>
+
+<!--描述：第三方支付-->
+<div style="display: none;">
+	<form method="post" action="{:U('Pay/jubaopay', '', '')}" id="payForm">
+			<input type="hidden" id="amount" name="amount" value="">	
+			<input type="hidden" id="accountmoney" name="accountmoney" value="">
+			<input type="hidden" id="accountscore" name="accountscore" value="">
+			<input type="hidden" id="accountbgid" name="accountbgid" value="0">
+				
+				
+			<input type="hidden" id="goodsName" name="goodsName" value="充值">
+			<input type="hidden" id="remark" name="remark" value=""/>
+			<input type="hidden" id="paytype" name="paytype" value="rechargewap"/>
+	</form>
+</div>
+<script type="text/javascript">
+	$(function(){
+		
+		 $("#ulOption").find("li").each(function(i,o){
+		 		var obj =$(o);
+		 		obj.click(function(){
+		 			$(".z-sel").removeClass("z-sel");
+		 			$(this).find("a").addClass("z-sel");
+		 			$("#addrechange").text(obj.attr("money"));
+		 		});
+		 });
+		 
+		 $("#btnrechange").click(function(){
+		 	  var vmoney=$("#addrechange").text();
+				$("#amount").val(vmoney);
+				$("accountmoney").val("0");
+				$("accountscore").val("0");
+				document.getElementById('payForm').submit();
+		 });
+	});
+</script>
+<style>
+a { color: #000;text-decoration: none;outline: medium none;}
+* {margin: 0px;padding: 0px;}
+ul, li {list-style: outside none none;}
+.g-Total {
+    background: #F4F4F4 none repeat scroll 0% 0%;
+    border-bottom: 1px solid #DCDCDC;
+    line-height: 30px;
+    padding: 5px 10px 0px;
+    font-size: 14px;
+}
+.gray6{ font-size: 14px; font-weight: bold;}
+.g-Recharge li a, .g-Recharge li .z-initsel, .g-Recharge li b {
+    color: #959595;
+    width: 90%;
+    line-height: 30px;
+    display: inline-block;
+    background: #FFF none repeat scroll 0% 0%;
+    border-radius: 5px;
+    text-align: center;
+    border: 1px solid #EAEAEA;
+    box-shadow: 1px 1px 1px #EDEDED;
+    position: relative;
+}
+.g-Recharge li a.z-sel {
+    border: 1px solid #F60;
+    color: #666;
+}
+.g-member {
+    background: #F4F4F4 none repeat scroll 0% 0%;
+    padding: 10px 5px;
+    box-sizing: border-box;
+}
+.clearfix {
+    display: block;
+}
+
+.g-Recharge li:nth-child(3n-1) {
+    width: 34%;
+    text-align: center;
+}
+.g-Recharge li,.z-init {
+    width: 33%;
+    float: left;
+    margin-bottom: 10px;
+}
+div, ul, li, dl, dt, dd, table, td, input {
+    font-size: 12px;
+}
+ .g-Recharge li .z-init {
+    width: 90%;
+    padding: 0px 0px;
+    text-align: center;
+    border: medium none;
+}
+.g-Recharge li a, .g-Recharge li .z-initsel, .g-Recharge li b{
+    color: #959595;
+    line-height: 30px;
+    text-align: center;
+}
+.g-Recharge li input {
+    color: #959595;
+}
+input {
+    vertical-align: middle;
+}
+body, button, input, select, textarea {
+    font-size: 12px;
+    font-family: arial,微软雅黑;
+}
+</style>
+    
+ 
