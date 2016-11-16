@@ -1,6 +1,24 @@
 
 <div id="subNavTabs" style="width: 220px;" >
-	<if condition="ROLE eq 1">
+	 
+ 
+	 
+	 
+	 
+	<!--<ul id="s_shopmgr" class="nav-sidebar hidden">
+		<li id="shopmgr" class="head">
+			<a>店铺管理</a>
+			<ul>
+				<li id="index" class="set"><a href="__MODULE__/Shop">店铺列表</a></li>
+			</ul>
+			<ul>
+				<li id="qrcode" class="set"><a href="__MODULE__/Shop/qrcode">生成二维码</a></li>
+			</ul>
+			<ul>
+				<li id="bank" class="set"><a href="__MODULE__/Shop/bank">银行列表</a></li>
+			</ul>
+		</li>
+	</ul>-->
 	<ul id="s_sysmgr" class="nav-sidebar hidden">
 		
 		<li id="usrmgr" class="head">
@@ -18,8 +36,14 @@
 				<li id="messagelist"><a href="__MODULE__/Msg/msglist">发送短信列表</a></li>
 			</ul>
 		</li>
+		<li id="rankmgr" class="head">
+			<a>等级管理</a>
+			<ul>
+				<li id="index" class="set"><a href="__MODULE__/Rank">等级列表</a></li>
+			</ul>
+		</li>
 	</ul>
-	</if>
+	 
 	<ul id="s_gdmgr" class="nav-sidebar hidden">
 		<li id="msmgr">
 			<a>秒杀商品管理</a>
@@ -28,20 +52,7 @@
 				<li id="addms"><a href="__MODULE__/Miaosha/add">添加秒杀商品</a></li>
 			</ul>
 		</li>
-		<!--<li id="xgmgr">
-			<a>限购商品管理</a>
-			<ul>
-				<li id="xglst"><a href="__MODULE__/Xiangou">限购商品列表</a></li>
-				<li id="addxg"><a href="__MODULE__/Xiangou/add">添加限购商品</a></li>
-			</ul>
-		</li>-->
-		<li id="pmmgr">
-			<a>拍卖商品管理</a>
-			<ul>
-				<li id="pmlst"><a href="__MODULE__/Paimai">拍卖商品列表</a></li>
-				<li id="addpm"><a href="__MODULE__/Paimai/add">添加拍卖商品</a></li>
-			</ul>
-		</li>
+		 
 		<li id="cmgr">
 			<a>分类管理</a>
 			<ul>
@@ -60,6 +71,11 @@
 				<li id="addmb"><a href="__MODULE__/Member/add">添加会员</a></li>
 				<li id="userrecharge"><a href="__MODULE__/Report/userrecharge">充值记录</a></li>
 				<li id="buylist"><a href="__MODULE__/Report/buylist">消费记录</a></li>
+				 
+				<li id="moneysort"><a href="__MODULE__/Member/moneysort">余额排名</a></li>
+				<li id="buysort"><a href="__MODULE__/Member/buysort">消费排名</a></li>
+				<li id="get_address"><a href="__MODULE__/Member/get_address">会员地址</a></li>
+				 
 			</ul>
 		</li>
 	</ul>
@@ -76,7 +92,8 @@
 		<li id="mbmgr_">
 			<a>界面管理</a>
 			<ul>
-				<li id="wxhdlist"><a href="__MODULE__/Slide">微信幻灯管理</a></li>
+				<li id="pchdlist"><a href="__MODULE__/Slide">PC幻灯管理</a></li>
+				<li id="wxhdlist"><a href="__MODULE__/Slide/wxindex">微信幻灯管理</a></li>
 				<!--<li id="aclist"><a href="__MODULE__/Article">文章管理</a></li>-->
 			</ul>
 		</li>
@@ -90,13 +107,13 @@
 				<!--<li id="aclist"><a href="__MODULE__/Article">文章管理</a></li>-->
 			</ul>
 		</li>
-		<li id="pmmgr_">
+		<!--<li id="pmmgr_">
 			<a>拍卖管理</a>
 			<ul>
 				<li id="paimaiadmin"><a href="__MODULE__/Report/paimaiadmin">中标记录</a></li>
-				<!--<li id="aclist"><a href="__MODULE__/Article">文章管理</a></li>-->
+				
 			</ul>
-		</li>
+		</li>-->
 	</ul>
 	
 	<div class="nav-sidebar-footer">
@@ -104,6 +121,10 @@
 </div>
 
 <script type="text/javascript">
+$('.up').click(function(){
+	var id=$(this).attr('up_id');
+	$('#'+id).slideToggle();
+});
 $(function() {
 	var mainNavTabs = $("#mainNavTabs");
 	var subNavTabs = $("#subNavTabs");

@@ -73,9 +73,8 @@ class MsgController extends CommonController {
 		$msg = M('message');
 		
 		$mobiles=$_POST["mobiles"];
-		$par1=$_POST["par2"];
+		$par1=$_POST["par1"];
 		$par2=$_POST["par2"];
-		
 		$allmsg="";
 		$snum=0;
 		$arr = explode(";",$mobiles);

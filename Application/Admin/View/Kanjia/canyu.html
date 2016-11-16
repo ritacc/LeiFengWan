@@ -1,0 +1,37 @@
+<taglib name="html" />	
+<content>
+<br>
+<div>
+<table class="table table-bordered table-hover">
+		<tr>
+			<th width="70px">序号</th>
+			<th>参与者微信id</th>
+			<th>参与者注册id</th>
+			<th>已砍金额</th>
+			<th>总金额</th>
+			<th>剩余金额</th>
+			<th>帮砍次数</th>
+			<th>剩余比例</th>
+			<th>开始时间</th>
+		</tr>
+		<tbody>
+			<volist name="list" id="vo" key="k">
+				<tr>
+				<td>{$k}</td>
+				<td>{$vo.wx_id}</td>
+				<td style="text-align: center;">{$vo.uid}</td>
+				<td style="text-align: center;">{$vo.yikan}</td>
+				<td>{$vo.money}</td>
+				<td>{$vo.shengyumoney}</td>
+				<td>{$vo.count}</td>
+				<td>{$vo.shengyubili}</td>
+				<td>{$vo.time|date="Y-m-d h:i:s",###}</td>			
+			</tr>
+			</volist>
+		</tbody>
+	</table>
+</div>
+</content>
+<include file="Public:pager"/>
+<script type="text/javascript">
+</script>

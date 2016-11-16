@@ -13,8 +13,10 @@
 			<th>金额</th>
 			<th>积分</th>
 			<th>经验值</th>
+			<th>等级</th>
 			<th>注册时间</th>
 			<th>登陆时间</th>
+			<th>是否小号</th>
 			<th style="width:150px">管理</th>
 		</tr>
 	</thead>
@@ -28,8 +30,10 @@
 				<td>{$item.money}</td>
 				<td>{$item.score}</td>
 				<td>{$item.jingyan}</td>
+				<td>{$item.rank_name}</td>
 				<td>{$item.time}</td>
 				<td>{$item.login_time}</td>
+				<td><eq name="item.is_false" value="1">是<else/>否</eq></td>
 				<td uid="{$item.uid}">
 					<a type="button" class="edit btn btn-warning btn-sm" href='{:U('edit','','')}/{$item.uid}'>编辑</a>
 					<!--<button type="button" class="delete btn btn-danger btn-sm">删除</button>-->

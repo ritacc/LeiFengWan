@@ -45,7 +45,15 @@
 				
 				#navbar ul li a{color: #ffffff;}
 				#navbar ul li p{color: #ffffff;}
-				
+				.red{
+					color: red;
+				}
+				.blue{
+					color: blue;
+				}
+				.green{
+					color: green;
+				}
 			</style>
 	</head>
 
@@ -73,13 +81,20 @@
 					</ul>
 				</div>
 			</div>
-		<ul id="mainNavTabs" class="navv navbar-fixed-top" style="position: absolute; top:40px; left:500px; z-index: 100; background: none; border-bottom: none; ">
-		<if condition="ROLE eq 1"><li id="sysmgr" class="normal"><a>系统管理</a></li></if>
+		<ul id="mainNavTabs" class="navv navbar-fixed-top" style="position: absolute; top:40px; left:300px; z-index: 100; background: none; border-bottom: none; ">
+		 
+		<li id="sysmgr" class="normal"><a>系统管理</a></li>
+		 
+		 
+		 
+		 
+		 
 		<li id="gdmgr" class="normal"><a>商品管理</a></li>
 		<li id="mbmgr" class="normal"><a>会员管理</a></li>
 		<li id="marticles" class="normal"><a>文章管理</a></li>
 		<li id="uimgr" class="normal"><a>界面管理</a></li>
 		<li id="report" class="normal"><a>购买管理</a></li>
+
 </ul>
 		</nav>
 
@@ -96,3 +111,4 @@
 		<script src="__JS__/jquery.maxlength.min.js"></script>
 		<!--<script src="__JS__/validator.min.js"></script>-->
 		<script src="__JS__/app.js"></script>
+		<script src="__PUBLIC__/layer/layer.js"></script>

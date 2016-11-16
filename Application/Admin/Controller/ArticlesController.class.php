@@ -72,20 +72,33 @@ class ArticlesController extends CommonController{
 	/**
 	 * 分页查询
 	 */
-	public function index($pageNum = 1,$pageSize = 20){
-		$m = D('Admin/Articles');
-    	$page = $m->queryByPage($pageSize,$pageNum);
-	  	$pager = new \Think\Page($page['total'],$page['pageSize']);// 实例化分页类 传入总记录数和每页显示的记录数
-	  	$page['pager'] = $pager->show();
+	public function index($pageSize = 10,$pageNum = 1){
+		// $m = D('Admin/Articles');
+  //   	$page = $m->queryByPage($pageSize,$pageNum);
+	 //  	$pager = new \Think\Page($page['total'],$page['pageSize']);// 实例化分页类 传入总记录数和每页显示的记录数
+	 //  	$page['pager'] = $pager->show();
     	
+    	// 分页
+		$db = M('articles');
+		$count = $db->where($map)->count();
+		if(!$pageSize) {
+			$pageSize = 10;
+		}
+		$pageNum = intval($pageNum);
+		$pageCount = ceil($count / $pageSize);
+		if($pageNum > $pageCount) {
+			$pageNum = $pageCount;
+		}
+		$this->assign('pageSize', $pageSize);
+		$this->assign('pageNum', $pageNum);
+		$this->assign('count', $count);
+		$this->assign('pageCount', $pageCount);
+		$this->assign('minPageNum', floor(($pageNum-1)/10.0) * 10 + 1);
+		$this->assign('maxPageNum', min(ceil(($pageNum)/10.0) * 10 + 1, $pageCount));
+		$list = $db->where($map)->order('createTime desc')->page($pageNum, $pageSize)->select();
 		$this->assign('pid', 'marticles');
 		$this->assign('mid', 'articles'); 
-    	 
-		//echo dump($page);
-		$this->assign('page', $page);
-		 
-		$this->SetPage($pageSize,$pageNum,$page["total"]);
-		
+		$this->assign('list',$list);
     	$this->assign('articleTitle',I('articleTitle'));
         $this->display("/articles/list");
 	}

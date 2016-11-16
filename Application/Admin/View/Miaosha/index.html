@@ -8,12 +8,13 @@
 			<th>所属栏目</th>
 			<th>已参与/总参</th>
 			<th>单价/元</th>
-			<th>期数/最大期数</th>
-			<th>人气商品</th>
+			<th width="80px;">期数/最大期数</th>
+			<th width="50px;">人气商品</th>
 			<if condition="$type eq 2">
 				<th>限购次数</th>
 			</if>
-			<th style="width:200px">操作</th>
+			<th>排序</th>
+			<th style="width:300px">操作</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -21,21 +22,32 @@
 		<tr>
 			<td>{$good.title}</td>
 			<td>{$good.category.name}</td>
-			<td>{$good.canyurenshu}/{$good.shengyurenshu}</td>
+			<td>{$good.canyurenshu}/{$good.zongrenshu}</td>
 			<td>{$good.danjia}</td>
 			<td>{$good.qishu}/{$good.maxqishu}</td>
 			<td>{$good.renqi}</td>
 			<if condition="$type eq 2">
 				<td>{$good.xiangou}</td>
 			</if>
+			<td>
+				{$good.sort}
+			</td>
 			<td gid="{$good.gid}">
+				<a type="button" class="edit btn btn-info btn-sm" href='{:U('history','','')}/{$good.gid}'>查看往期</a>
 				<if condition="$good.status lt 2">
 					<a type="button" class="edit btn btn-warning btn-sm" href='{:U('edit','','')}/{$good.gid}'>编辑</a>
 				</if>
 				<if condition="$good.status eq 0 AND $good.qishu eq 1">
 					<button type="button" class="delete btn btn-danger btn-sm">删除</button>
 				</if>
-				<a type="button" class="edit btn btn-info btn-sm" href='{:U('history','','')}/{$good.gid}'>查看往期</a>
+				<if condition="$good.in_auto eq 1">
+					<else /><a id="auto_{$good.gid}" gid="{$good.gid}" type="button" class="btn btn-success add_auto">自动下单</a>
+					<if condition="$good.is_quick eq 1">
+					<a id="quick_{$good.gid}" gid="{$good.gid}" type="button" class="btn btn-default del_quick">取消快速</a>
+					<else /><a id="quick_{$good.gid}" gid="{$good.gid}" type="button" class="btn btn-danger add_quick">快速开奖</a>
+				</if>
+				</if>
+
 			</td>
 		</tr>
 		</foreach>
@@ -65,5 +77,47 @@
 				}
 			}, "json");
 		}
+	});
+	$('.add_auto').click(function(){
+		var gid=$(this).attr('gid');
+		layer.load(0);
+		$.post('{:U("add_auto")}',{gid:gid},function(data){
+			if(data.status){
+				$('#auto_'+gid).hide();
+				layer.msg(data.info,{icon:1});
+			}
+			else{
+				layer.msg(data.info,{icon:0});
+			}
+			layer.closeAll('loading');
+		});
+	});
+	$('.add_quick').click(function(){
+		var gid=$(this).attr('gid');
+		layer.load(0);
+		$.post('{:U("add_quick")}',{gid:gid},function(data){
+			if(data.status){
+				$('#quick_'+gid).hide();
+				layer.msg(data.info,{icon:1});
+			}
+			else{
+				layer.msg(data.info,{icon:0});
+			}
+			layer.closeAll('loading');
+		});
+	});
+	$('.del_quick').click(function(){
+		var gid=$(this).attr('gid');
+		layer.load(0);
+		$.post('{:U("del_quick")}',{gid:gid},function(data){
+			if(data.status){
+				$('#quick_'+gid).hide();
+				layer.msg(data.info,{icon:1});
+			}
+			else{
+				layer.msg(data.info,{icon:0});
+			}
+			layer.closeAll('loading');
+		});
 	});
 </script>

@@ -21,11 +21,29 @@
 	</volist>
 </select></div>
 <div id="s2" style="float: left;line-height: 30px;">——②——></div>
-<div style="float: left;"><select name="s3" class="form-control">
-	<volist name="list" id="vo">
-		<option value="{$vo.rank_id}" <if condition="$vo.rank_id eq $rank_list[2]"> selected</if> >{$vo.rank_name}</option>
-	</volist>
-</select></div>
+<div style="float: left;">
+	<select name="s3" class="form-control">
+		<volist name="list" id="vo">
+			<option value="{$vo.rank_id}" <if condition="$vo.rank_id eq $rank_list[2]"> selected</if> >{$vo.rank_name}</option>
+		</volist>
+	</select>
+</div>
+<div id="s3" style="float: left;line-height: 30px;">——②——></div>
+<div style="float: left;">
+	<select name="s4" class="form-control">
+		<volist name="list" id="vo">
+			<option value="{$vo.rank_id}" <if condition="$vo.rank_id eq $rank_list[3]"> selected</if> >{$vo.rank_name}</option>
+		</volist>
+	</select>
+</div>
+<div id="s4" style="float: left;line-height: 30px;">——②——></div>
+<div style="float: left;">
+	<select name="s5" class="form-control">
+		<volist name="list" id="vo">
+			<option value="{$vo.rank_id}" <if condition="$vo.rank_id eq $rank_list[4]"> selected</if> >{$vo.rank_name}</option>
+		</volist>
+	</select>
+</div>
 <div style="float: left;margin-left: 20px;"><a class="btn btn-warning save">保存</a></div>
 </div>
 <div style="clear:both;"></div>

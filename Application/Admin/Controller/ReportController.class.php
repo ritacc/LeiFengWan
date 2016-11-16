@@ -8,7 +8,8 @@ class ReportController extends CommonController {
 
 	public function buylistadmin($pageSize = 25, $pageNum = 1) {
 		 
-		 $filter = ' prizeuid > 0 ';
+		 $filter ['_string']= ' prizeuid > 0 ';
+		 $filter['is_false']=0;
 		 // 分页
 		$Model = M('miaosha_history');
 		$list =$Model
@@ -16,8 +17,8 @@ class ReportController extends CommonController {
 		->where($filter)
 		->page($pageNum, $pageSize)		
 		->field("mobile,title,thumb,danjia,status,yyg_miaosha_history.gid, yyg_miaosha_history.qishu, canyurenshu
-		, zongrenshu,type,jishijiexiao,yyg_miaosha_history.time,m.uid,prizeuid,m.username,m.mobile,postcode,postcompany ")
-		->order(" yyg_miaosha_history.time  desc")
+		, zongrenshu,type,jishijiexiao,yyg_miaosha_history.lastTime,m.uid,prizeuid,m.username,m.mobile,postcode,postcompany ")
+		->order(" yyg_miaosha_history.end_time  desc")
 		->select();
 		
 		
@@ -137,68 +138,132 @@ class ReportController extends CommonController {
 	 * 充值记录
 	 * **/
 	public function userrecharge($pageSize = 25, $pageNum = 1) {
-		
-		$db = M('account');		 
-		$map = ' (a.type=30 or a.type=31)';
-		
+$value=I("inputValue");
+		$date = I("inputTime");
+		$db = M('account');
+		print_r(I("type"));
+		if($value)	
+		{
+
+			switch (I("type")) {
+				case 0:
+					$map = ' (a.type=30 or a.type=31 or a.type =32) and a.status=1 and m.is_false=0 and m.mobile ="'.$value.'"';
+			  		break;  
+				case 1:
+					$map = ' (a.type=30 or a.type=31 or a.type =32) and a.status=1 and m.is_false=0 and m.username ="'.$value.'"';
+			 		break;
+				default:
+					break;
+			}
+			$this->assign('MobileNumber',$value);
+			if($date)
+			{
+				$map = $map.'and a.time >"'.$date.'"';
+				print_r($map);
+				$this->assign('inputTime',$date);
+			}
+			$count = $db->join('a inner join __MEMBER__ m on m.uid=a.uid')->where($map)->count();
+					$pageNum =1;
+					$pageSize=30;
+		}
+		else if ($date) {
+			$map = ' (a.type=30 or a.type=31 or a.type =32) and a.status=1 and m.is_false=0 and a.time > "'.$date.'"';
+			$count = $db->join('a inner join __MEMBER__ m on m.uid=a.uid')->where($map)->count();
+					$pageNum =1;
+					$pageSize=30;
+				$this->assign('inputTime',$date);	
+		}
+		else
+		{
+			$map = ' (a.type=-1 or a.type=11 or a.type=1 or a.type=0) and a.status=1 and m.is_false=0';
+			$count = $db->join('a inner join __MEMBER__ m on m.uid=a.uid')->where($map)->count();
+			if(!$pageSize) {
+			$pageSize = 25;
+			}
+			$pageSize = 15;
+		}
 		$list = $db
 			->field('a.*,m.username,m.mobile')
 			->join('a inner join __MEMBER__ m on m.uid=a.uid')
 			->where($map)
 			->page($pageNum, $pageSize)	
 			->order('a.time desc')->select();
-			
-		$count = $db->join('a inner join __MEMBER__ m on m.uid=a.uid')->where($map)->count();
-		
-		if(!$pageSize) {
-			$pageSize = 25;
+			$this->assign('list',$list);// 模板变量赋值
+			$pageNum = intval($pageNum);
+			$pageCount = ceil($count / $pageSize);
+			if($pageNum > $pageCount) {
+				$pageNum = $pageCount;
 		}
-		$pageNum = intval($pageNum);
-		$pageCount = ceil($count / $pageSize);
-		if($pageNum > $pageCount) {
-			$pageNum = $pageCount;
-		}
-		$this->assign('pageSize', $pageSize);
-		$this->assign('pageNum', $pageNum);
-		$this->assign('count', $count);
-		$this->assign('pageCount', $pageCount);
-		$this->assign('minPageNum', floor(($pageNum-1)/10.0) * 10 + 1);
-		$this->assign('maxPageNum', min(ceil(($pageNum)/10.0) * 10 + 1, $pageCount));
-		
-		$this->assign('list',$list);// 模板变量赋值
-		$this->assign('title', '充值记录');
-		$this->assign('pid', 'mbmgr');
-		$this->assign('mid', 'userrecharge');
-		$this->display();
+			$this->assign('pageSize', $pageSize);
+			$this->assign('pageNum', $pageNum);
+			$this->assign('count', $count);
+			$this->assign('pageCount', $pageCount);
+			$this->assign('minPageNum', floor(($pageNum-1)/10.0) * 10 + 1);
+			$this->assign('maxPageNum', min(ceil(($pageNum)/10.0) * 10 + 1, $pageCount));
+			$this->assign('title', '充值记录');
+			$this->assign('pid', 'mbmgr');
+			$this->assign('mid', 'userrecharge');
+			$this->display();
 	}
 	/**
 	 * 购买记录
 	 * *****/
 	public function buylist($pageSize = 25, $pageNum = 1) {
-		
-		if(!$pageSize) {
-			$pageSize = 25;
+		$value=I("inputValue");
+		$date = I("inputTime");
+		$db = M('account_goods');
+		if($value)	
+		{
+
+			switch (I("type")) {
+				case 1:
+					$map = ' (at.type=-1 or at.type=11 or at.type=1 or at.type=0) and at.status=1 and mb.is_false=0 and mb.mobile ="'.$value.'"';
+			  		break;  
+				case 2:
+					$map = ' (at.type=-1 or at.type=11 or at.type=1 or at.type=0) and at.status=1 and mb.is_false=0 and mb.username ="'.$value.'"';
+			 		break;
+				default:
+					break;
+			}
+			$this->assign('MobileNumber',$value);
+			if($date)
+			{
+				$map = $map.'and at.time > "'.$date.'"';
+
+				$this->assign('inputTime',$date);
+			}
+			$count = $db->join('a  join yyg_account at on at.payid=a.payid join yyg_member mb on a.uid=mb.uid join yyg_miaosha ms on ms.gid = a.gid')->where($map)->count();
+					$pageNum =1;
+					$pageSize=$count;
 		}
-		$pageSize = 15;
-		
-		$db = M('account');		 
-		$map = ' (a.type=11 or a.type=1 or a.type=0) and a.status=1';
-		
+		else if ($date) {
+			$map = ' (at.type=-1 or at.type=11 or at.type=1 or at.type=0) and at.status=1 and mb.is_false=0 and at.time > "'.$date.'"';
+			$count = $db->join('a  join yyg_account at on at.payid=a.payid join yyg_member mb on a.uid=mb.uid join yyg_miaosha ms on ms.gid = a.gid')->where($map)->count();
+					$pageNum =1;
+					$pageSize=$count;
+				$this->assign('inputTime',$date);	
+		}
+		else
+		{
+			$map = ' (at.type=-1 or at.type=11 or at.type=1 or at.type=0) and at.status=1 and mb.is_false=0';
+			$count = $db->join('a  join yyg_account at on at.payid=a.payid join yyg_member mb on a.uid=mb.uid join yyg_miaosha ms on ms.gid = a.gid ')->where($map)->count();
+			if(!$pageSize) {
+			$pageSize = 25;
+			}
+			$pageSize = 15;
+		}
 		$list = $db
-			->field('a.*,m.username,m.mobile')
-			->join('a inner join __MEMBER__ m on m.uid=a.uid')
+			->field('at.*,a.count,a.qishu,mb.username,mb.mobile,ms.title,ms.danjia')
+			->join('a  join yyg_account at on at.payid=a.payid join yyg_member mb on a.uid=mb.uid join yyg_miaosha ms on ms.gid = a.gid')
 			->where($map)
 			->page($pageNum, $pageSize)	
-			->order('a.time desc')->select();
-			
-		$count = $db->join('a inner join __MEMBER__ m on m.uid=a.uid')->where($map)->count();
-		
-		
+			->order('at.time desc')->select();
+		$this->assign('list',$list);// 模板变量赋值
 		$pageNum = intval($pageNum);
 		$pageCount = ceil($count / $pageSize);
-		if($pageNum > $pageCount) {
-			$pageNum = $pageCount;
-		}
+			if($pageNum > $pageCount) {
+				$pageNum = $pageCount;
+			}
 		$this->assign('pageSize', $pageSize);
 		$this->assign('pageNum', $pageNum);
 		$this->assign('count', $count);
@@ -206,8 +271,8 @@ class ReportController extends CommonController {
 		$this->assign('minPageNum', floor(($pageNum-1)/10.0) * 10 + 1);
 		$this->assign('maxPageNum', min(ceil(($pageNum)/10.0) * 10 + 1, $pageCount));
 		
-		$this->assign('list',$list);// 模板变量赋值
-		$this->assign('title', '购买记录');
+
+		$this->assign('title', '消费记录');
 		$this->assign('pid', 'mbmgr');
 		$this->assign('mid', 'buylist');
 		$this->display();
@@ -349,8 +414,16 @@ class ReportController extends CommonController {
 		$this->display();
 	}
 	
-	
-	
+	public function find()
+	{
+
+	}
+	public function buydetails()
+	{
+		$this->assign('pid','mbmgr');
+		$this->assign('mid','buydetails');
+		$this->display();
+	}
 	
 	
 	

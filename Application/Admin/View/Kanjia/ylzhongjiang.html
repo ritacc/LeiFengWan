@@ -1,0 +1,86 @@
+<taglib name="html" />	
+<content>
+<div style="float:left;margin-bottom: 10px;">
+<!-- <a class="btn btn-success add">添加中奖用户</a> -->
+</div>
+
+<div style="clear:both;"></div>
+	<table class="table table-bordered table-hover">
+		<tr>
+			<th width="70px">序号</th>
+			<th>uid</th>
+			<th>中奖昵称</th>
+			<th>用户名</th>
+			<th>中奖手机</th>
+			<th>注册时间</th>
+			<th>wx_id</th>
+			<th>是否发货</th>
+			<th>开始时间</th>
+			<th>中奖时间</th>
+			<th>操作</th>
+		</tr>
+		<tbody>
+			<volist name="list" id="vo" key="k">
+				<tr>
+				<td>{$k}</td>
+				<td>{$vo.uid}</td>
+				<td>{$vo.nickname}</td>
+				<td>{$vo.username}</td>
+				<td>{$vo.mobile}</td>
+				<td>{$vo.reg_time}</td>
+				<td>{$vo.wx_id}</td>
+				<td><switch name="vo['is_send']">
+				<case value="1">已发货</case>
+				<case value="0">未发货</case>
+				<default>未知状态</default>
+				</switch></td>
+				<td>{$vo.time|date="Y-m-d H:i:s",###}</td>
+				<td>{$vo.end_time}</td>
+				<td width="150px"><if condition="$vo.is_send eq 0"><a kj_id="{$vo.kj_id}" mobile="{$vo.mobile}" class="btn btn-info fahuo">发货</a></if></td>
+			</tr>
+			</volist>
+		</tbody>
+	</table>
+</content>
+<script type="text/javascript">
+	$('.fahuo').click(function(){
+		var kj_id=$(this).attr('kj_id');
+		var mobile=$(this).attr('mobile');
+		layer.open({
+		  type: 1,
+		  title:"发货信息",
+		  scrollbar: false,
+		  skin: 'layui-layer-rim', //加上边框
+		  area: ['350px', '230px'], //宽高
+		  content: '<div style="width:90%;text-align:center;margin-top:20px;"><form class="form-horizontal"><div class="form-group"><label class="col-sm-4 control-label">发货快递</label><input name="par1" type="text" style="width:150px" class="col-sm-4 form-control" placeholder="输入快递名"></div><div class="form-group"><label class="col-sm-4 control-label">快递单号</label><input name="par2" type="text" style="width:150px" class="col-sm-4 form-control" placeholder="快递单号"></div></form><a style="width:100px;" class="btn btn-success" onclick="add('+kj_id+','+mobile+')">确定</a>&nbsp;&nbsp;<a style="width:100px;" class="btn btn-default" onclick="cancel()">取消</a></div>',
+		});
+	});
+	function add(kj_id,mobile){
+		var par1=$('input[name=par1]').val();
+		var par2=$('input[name=par2]').val();
+		if(par1==""){
+			layer.msg('请输入完整信息',{icon:0});
+			return false;
+		}
+		if(par2==""){
+			layer.msg('请输入完整信息',{icon:0});
+			return false;
+		}
+		$.post("{:U('fahuo')}",{par1:par1,par2:par2,kj_id:kj_id,mobile:mobile},function(data){
+			if(data.status){
+				layer.msg(data.info,{icon:1});
+				setTimeout(function(){
+					window.location.reload(0);
+				},1000);
+			}
+			else{
+				layer.msg(data.info,{icon:0});
+			}
+		});
+	}
+	function cancel(){
+		layer.closeAll();
+	}
+	
+	
+</script>
